@@ -1,130 +1,263 @@
-#include <stdio.h>
-#include <malloc.h>
-#include <stdlib.h>
-
-struct node {
-  int value;
-  struct node *next;
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
 };
+struct node *head;
 
-void insert();
+void insertbegin();
+void insertend();
+void insertrandom();
+void deletebegin();
+void deleteend();
+void deleterandom();
+void search();
 void display();
-void delete();
-int count();
-
-typedef struct node DATA_NODE;
-
-DATA_NODE *head_node, *first_node, *temp_node = 0, *prev_node, next_node;
-int data;
-
-int main() {
-  int option = 0;
-
-  printf("Singly Linked List Example - All Operations\n");
-
-  while (option < 5) {
-
-    printf("\nOptions\n");
-    printf("1 : Insert into Linked List \n");
-    printf("2 : Delete from Linked List \n");
-    printf("3 : Display Linked List\n");
-    printf("4 : Count Linked List\n");
-    printf("Others : Exit()\n");
-    printf("Enter your option:");
-    scanf("%d", &option);
-    switch (option) {
-      case 1:
-        insert();
-        break;
-      case 2:
-        delete();
-        break;
-      case 3:
-        display();
-        break;
-      case 4:
-        count();
-        break;
-      default:
-        break;
-    }
-  }
-
-  return 0;
-}
-
-void insert() {
-  printf("\nEnter Element for Insert Linked List : \n");
-  scanf("%d", &data);
-
-  temp_node = (DATA_NODE *) malloc(sizeof (DATA_NODE));
-
-  temp_node->value = data;
-
-  if (first_node == 0) {
-    first_node = temp_node;
-  } else {
-    head_node->next = temp_node;
-  }
-  temp_node->next = 0;
-  head_node = temp_node;
-  fflush(stdin);
-}
-
-void delete() {
-  int countvalue, pos, i = 0;
-  countvalue = count();
-  temp_node = first_node;
-  printf("\nDisplay Linked List : \n");
-
-  printf("\nEnter Position for Delete Element : \n");
-  scanf("%d", &pos);
-
-  if (pos > 0 && pos <= countvalue) {
-    if (pos == 1) {
-      temp_node = temp_node -> next;
-      first_node = temp_node;
-      printf("\nDeleted Successfully \n\n");
-    } else {
-      while (temp_node != 0) {
-        if (i == (pos - 1)) {
-          prev_node->next = temp_node->next;
-          if(i == (countvalue - 1))
-          {
-			  head_node = prev_node;
-		  }
-          printf("\nDeleted Successfully \n\n");
-          break;
-        } else {
-          i++;
-          prev_node = temp_node;
-          temp_node = temp_node -> next;
+void main()
+{
+    int choice = 0;
+    while(choice !=9)
+    {
+        printf("\n\nMAIN MENU");
+        printf("\n---------");
+        printf("\nChoose an option");
+        printf("\n1.Insert at begining");
+        printf("\n2.Insert at end");
+        printf("\n3.Insert at random");
+        printf("\n4.Delete at begining");
+        printf("\n5.Delte at end");
+        printf("\n6.Delete at random");
+        printf("\n7.Dispaly");
+        printf("\n8.Search");
+        printf("\n9.Exit");
+        
+        printf("\nEnter choice : ");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:
+                insertbegin();
+                break;
+            case 2:
+                insertend();
+                break;
+            case 3:
+                insertrandom();
+                break;
+            case 4:
+                deletebegin();
+                break;
+            case 5:
+                deleteend();
+                break;
+            case 6:
+                deleterandom();
+                break;
+            case 7:
+                display();
+                break;
+            case 8:
+                search();
+                break;
+            case 9:
+                exit(0);
+                break;
+            default:
+                printf("\nPLz enter a valid choice!!!");
         }
-      }
     }
-  } else
-    printf("\nInvalid Position \n\n");
 }
 
-void display() {
-  int count = 0;
-  temp_node = first_node;
-  printf("\nDisplay Linked List : \n");
-  while (temp_node != 0) {
-    printf("# %d # ", temp_node->value);
-    count++;
-    temp_node = temp_node -> next;
-  }
-  printf("\nNo Of Items In Linked List : %d\n", count);
+void insertbegin()
+{
+    int item;
+    struct node *ptr;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        printf("Enter th value : ");
+        scanf("%d",&item);
+        ptr->data = item;
+        ptr->next = head;
+        head = ptr;
+        printf("\nNode inserted !");
+    }
 }
 
-int count() {
-  int count = 0;
-  temp_node = first_node;
-  while (temp_node != 0) {
-    count++;
-    temp_node = temp_node -> next;
-  }
-  printf("\nNo Of Items In Linked List : %d\n", count);
-  return count;
+void insertend()
+{
+    int item;
+    struct node *ptr,*temp;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        printf("\nEnter th value : ");
+        scanf("%d",&item);
+        ptr->data = item;
+        ptr->next = NULL;
+        temp = head;
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = ptr;
+        printf("\nNode inserted !");
+    }
 }
+
+void insertrandom()
+{
+    int item,loc,i;
+    struct node *ptr,*temp;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        printf("\nEnter the value : ");
+        scanf("%d",&item);
+        ptr->data = item;
+        printf("Enter the location : ");
+        scanf("%d",&loc);
+        
+        temp = head;
+        for(i=1;i<loc-1;i++)
+        {
+            temp = temp->next;
+        }
+        ptr->next = temp->next;
+        temp->next = ptr;
+        printf("\nNode inserted !");
+    }
+}
+    
+void deletebegin()
+{
+    struct node *ptr;
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        ptr = head;
+        head = ptr->next;
+        free(ptr);
+        printf("\nNode deleted !");
+    }
+}
+
+void deleteend()
+{
+    struct node *ptr,*ptr1;
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        ptr = head;
+        while(ptr->next != NULL)
+        {
+            ptr1 = ptr;
+            ptr = ptr->next;
+        }
+        ptr1->next = NULL;
+        free(ptr);
+        printf("\nNode deleted !");
+    }
+}
+
+void deleterandom()
+{
+    int loc,i;
+    struct node *ptr,*ptr1;
+    ptr = (struct node*)malloc(sizeof(struct node));
+    if(ptr==NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        printf("\nEnter the location : ");
+        scanf("%d",&loc);
+        ptr = head;
+        for(i=1;i<loc;i++)
+        {
+            ptr1 = ptr;
+            ptr = ptr->next;
+        }
+        ptr1->next = ptr->next;
+        free(ptr);
+        printf("\nNode deleted !");
+    }
+}
+
+void display()
+{
+    struct node *ptr;
+    if(ptr==NULL)
+    {
+        printf("\nEmpty !");
+    }
+    else
+    {
+        ptr = head;
+        printf("\nValues are ...\n");
+        while(ptr != NULL)
+        {
+            printf("\t%d",ptr->data);
+            ptr = ptr->next;
+        }
+    }
+}
+
+void search()
+{
+    int s,i=0,flag;
+    struct node *ptr;
+    ptr = head;
+    
+    if(ptr==NULL)
+    {
+        printf("\nEmpty !");
+    }
+    else
+    {
+        printf("\nEnter the item to search : ");
+        scanf("%d",&s);
+        while(ptr!=NULL)
+        {
+            if(ptr->data == s)
+            {
+                printf("\nItem found at postion %d",i+1);
+                flag = 0;
+            }
+            else
+            {
+                flag = 1;
+            }
+            i++;
+            ptr = ptr->next;
+        }
+        if(flag == 1)
+        {
+            printf("\nItem not found !");
+        }
+    }
+}
+
+
+
